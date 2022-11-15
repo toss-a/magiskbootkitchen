@@ -73,7 +73,10 @@ main() {
 		fi
 	done
 	if [ "$vendorboot" = "1" ]; then
-		r_fmt="$(format ./ramdisk.cpio)"
+		mv split_img/ramdisk.cpio split_img/ramdisk.cpio.lz4
+		lz4 -d split_img/ramdisk.cpio.lz4 split_img/ramdisk.cpio
+		#pwd > log.txt
+		r_fmt="$(format ./split_img/ramdisk.cpio)"
 		echo "Detect cpio format : ${r_fmt}"
 		printf "${r_fmt}" > "ramdisk_compress_type"
 		if [ ! "$r_fmt" = "raw" ]; then
